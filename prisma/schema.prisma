@@ -16,6 +16,10 @@ model User {
   num_iden String @db.VarChar(50)
   nombre String @db.VarChar(150)
   apellido String @db.VarChar(150)
+  correo String @db.VarChar(180)
+  password String @db.VarChar(190)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   tarea Tarea[]
 }
 
