@@ -14,4 +14,6 @@ model Tarea {
   id Int @id @default(autoincrement())
   nombre_tarea String @db.VarChar(250)
   descripcion String @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
