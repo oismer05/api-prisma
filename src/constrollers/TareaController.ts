@@ -5,7 +5,6 @@ const prisma = new PrismaClient()
 export const getTarea = async (_req:any,res:any) => {
     try {
        const tareas = await prisma.tarea.findMany();
-       
        res.status(200).json({
          code:200,
          message:"Tareas obtenidas",
@@ -19,15 +18,20 @@ export const getTarea = async (_req:any,res:any) => {
 
 export const PostTarea =async (req:any,res:any) => {
       try {
+
+        const data = {
+          nombre_tarea:req.body.nombre_tarea,
+          descripcion:req.body.descripcion,
+          userId:req.user.id
+        }
         
-        const tarea = await prisma.tarea.create({
-            data:req.body
+         await prisma.tarea.create({
+            data:data
         })
 
         res.status(200).json({
             code:200,
-            message:"Tarea guadada",
-            data:tarea
+            message:"Tarea guardada exitosamente !!",
         })
 
       } catch (error) {
@@ -45,12 +49,11 @@ export const getOneTarea = async (req:any,res:any) => {
                equals:parseInt(req.params.id) 
             }
          }
-       }
-       )
+       })
 
        res.status(200).json({
         code:200,
-        message:"Una Tarea obtenida",
+        message:"Tarea obtenida",
         data:oneTarea  
       })
 
