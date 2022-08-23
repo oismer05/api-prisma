@@ -2,10 +2,13 @@ import {Request,Response} from 'express'
 import jwt from 'jsonwebtoken'
 import { PrismaClient } from '@prisma/client'
 import { encryptPassword,validatePassword } from '../config/configPassword'
+import { UserSchemaF,UserLoginF } from '../schemaZod/ZodValidate'
+
 const prisma = new PrismaClient()
 
 export const signup = async(req:Request,res:Response) => {
-
+      
+    try {
       const data = {
         tipo_iden:req.body.tipo_iden,
         num_iden:req.body.num_iden,
@@ -16,6 +19,7 @@ export const signup = async(req:Request,res:Response) => {
         password:await encryptPassword(req.body.password)      
       }
 
+      UserSchemaF(data)
 
       await prisma.user.create({
         data:data
@@ -25,12 +29,22 @@ export const signup = async(req:Request,res:Response) => {
          code:200,
          message:"Usuario registrado exitosamente !!"
       })
+    } catch (error:any) {
+
+      if(error.issues){
+        res.status(400).json(error.issues)
+        return
+      } 
       
+      res.status(500).json(error) 
+
+    }   
 } 
 
 export const signin = async (req:Request,res:Response) => {
    
   try {
+    UserLoginF(req.body) 
     const user = await prisma.user.findFirst({
       where:{
         correo:req.body.correo
@@ -62,8 +76,14 @@ export const signin = async (req:Request,res:Response) => {
 
     res.status(200).json({token});
 
-  } catch (error) {
-    res.json(error) 
+  } catch (error:any) {
+    
+    if(error.issues){
+      res.status(400).json(error.issues)
+      return
+    } 
+    
+    res.status(500).json(error)  
   }
 }
 
