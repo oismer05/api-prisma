@@ -6,12 +6,13 @@ const prisma = new PrismaClient()
 
 export const signup = async(req:Request,res:Response) => {
 
-      let data = {
+      const data = {
         tipo_iden:req.body.tipo_iden,
         num_iden:req.body.num_iden,
         nombre:req.body.nombre,
         apellido:req.body.apellido,
         correo:req.body.correo,
+        rolId:req.body.rolId,
         password:await encryptPassword(req.body.password)      
       }
 

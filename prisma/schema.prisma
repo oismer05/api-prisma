@@ -18,6 +18,8 @@ model User {
   apellido String @db.VarChar(150)
   correo String @db.VarChar(180)
   password String @db.VarChar(190)
+  rol Roles @relation(fields: [rolId],references: [id])
+  rolId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   tarea Tarea[]
@@ -29,8 +31,15 @@ model Tarea {
   descripcion String @db.Text
   user User @relation(fields: [userId],references: [id])
   userId Int
+  status String @db.VarChar(2) 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Roles {
+  id Int @id @default(autoincrement())
+  nombre_rol String @db.VarChar(50)
+  user User[]
 }
 
 
