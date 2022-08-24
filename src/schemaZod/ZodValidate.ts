@@ -25,4 +25,14 @@ export const UserLoginF = (obj:any) => {
     loginSchema.parse(obj)
 }
 
+export const TareaPost = (obj:any) => {
+    const tareaSchema = z.object({
+        nombre_tarea:z.string().min(1),
+        descripcion:z.string().min(1),
+        userId:z.number().min(1)
+    })
+
+    tareaSchema.parse(obj)
+}
+
  
